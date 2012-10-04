@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/core.jar"/>
 	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/oscP5.jar"/>
 	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/SimpleOpenNI/SimpleOpenNI.jar"/>
+	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/peasycam/library/peasycam.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

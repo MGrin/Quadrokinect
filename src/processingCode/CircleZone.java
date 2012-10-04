@@ -18,7 +18,7 @@ public class CircleZone {
 	}
 	
 	void display(){
-		parent.ellipseMode(parent.CENTER);
+		parent.ellipseMode(PApplet.CENTER);
 		parent.ellipse(center.x, center.y, R, R);
 	}
 	
