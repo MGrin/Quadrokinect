@@ -1,15 +1,18 @@
 package ardroneControl;
 
+import processing.core.PImage;
+import processingCode.CameraView;
+
 import com.shigeodayo.ardrone.processing.ARDroneForP5;
 
 public class ArdroneControl {
 
 	private ARDroneForP5 ardrone;
-	
+
 	private boolean connected = true;
 	private boolean inAir = false;
 	private boolean stoped = true;
-	
+
 	public ArdroneControl(ARDroneForP5 ard) {
 		ardrone = ard;
 	}
@@ -27,7 +30,7 @@ public class ArdroneControl {
 		ardrone.stop();
 		ardrone.landing();
 		stoped = true;
-		inAir=false;
+		inAir = false;
 		System.out.println("Safe drone!");
 	}
 
@@ -85,26 +88,34 @@ public class ArdroneControl {
 			ardrone.spinRight(speed);
 		stoped = false;
 	}
-	
-	public void takeOff(){
-		if(connected)
+
+	public void takeOff() {
+		if (connected)
 			ardrone.takeOff();
 		inAir = true;
 		System.out.println("TakeOf");
 	}
-	
-	public void landing(){
-		if(connected)
+
+	public void landing() {
+		if (connected)
 			ardrone.landing();
 		inAir = false;
 		System.out.println("Landing");
 	}
-	
-	public boolean inAir(){
+
+	public boolean inAir() {
 		return inAir;
 	}
-	
-	public boolean isStopped(){
+
+	public boolean isStopped() {
 		return stoped;
+	}
+
+	public int getBattery() {
+		return ardrone.getBatteryPercentage();
+	}
+
+	public PImage getCameraImage() {
+		return ardrone.getVideoImage(true);
 	}
 }
