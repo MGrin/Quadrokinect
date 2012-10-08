@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/ARDroneForP5.jar"/>
 	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/core.jar"/>
 	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/oscP5.jar"/>
 	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/SimpleOpenNI/SimpleOpenNI.jar"/>
 	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/peasycam/library/peasycam.jar"/>
+	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/ARDRoneForP5_Modified.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

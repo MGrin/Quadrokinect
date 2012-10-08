@@ -2,8 +2,7 @@ package gui;
 
 import javax.swing.JFrame;
 
-import processingCode.KinectCapture2D;
-import processingCode.KinectCapture3D;
+import processing.sketchs.KinectCapture3D;
 
 public class KinectWindow extends JFrame{
 
