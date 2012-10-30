@@ -13,6 +13,7 @@ import utils.Constants;
 import ardrone.ArdroneGroup;
 import ardrone.CommandsListener;
 
+import com.shigeodayo.ardrone.ARDrone;
 import com.shigeodayo.ardrone.processing.ARDroneForP5;
 
 public class KinectCapture3D extends PApplet {
@@ -47,22 +48,23 @@ public class KinectCapture3D extends PApplet {
 
 		controlGroup = new ArdroneGroup(0);
 
-		/*ARDroneForP5 mainArdrone = new ARDroneForP5(Constants.IP_ADDRESS_MASK
-				+ "3");*/
-		//mainArdrone.setMaxAltitude(40000);
-		ARDroneForP5 secondArdrone = new ARDroneForP5("192.168.0.3");
-		secondArdrone.setMaxAltitude(400000);
-
-		//controlGroup.addArdrone(mainArdrone, 3);
+		ARDroneForP5 secondArdrone = new ARDroneForP5("192.168.1.1");
+		secondArdrone.setMaxAltitude(4000);
+		controlGroup.setNAV(true);
+		controlGroup.setVideo(true, Constants.FRONT_CAMERA);
 		controlGroup.addArdrone(secondArdrone, 4);
 		groups.add(controlGroup);
 
-		if (controlGroup.connect()) {
-			//(new VideoWindow(mainArdrone)).setVisible(true);
-			(new VideoWindow(secondArdrone)).setVisible(true);
-		}
+		/*if (controlGroup.connect()) {
+			showVideo(controlGroup.getARDrone(0));
+		}*/
+		
 		commandsListener = new CommandsListener(groups, controlGroup, this);
 
+	}
+
+	public void showVideo(ARDroneForP5 arDrone) {
+		(new VideoWindow(arDrone)).setVisible(true);
 	}
 
 	public void draw() {
@@ -296,16 +298,16 @@ public class KinectCapture3D extends PApplet {
 		} else if (key == 'l') {
 			rightHand[2] += 1;
 			leftHand[2] -= 1;
-		} else if (key == 'o'){
-			leftHand[0]=-Constants.SAFE_ZONE_SIZE;
-			rightHand[0]=Constants.SAFE_ZONE_SIZE;
-			leftHand[1]=0;
-			rightHand[1]=0;
-			leftHand[2]=0;
-			rightHand[2]=0;
-			controllerLocation[0]=0;
-			controllerLocation[1]=0;
-			controllerLocation[2]=0;
+		} else if (key == 'o') {
+			leftHand[0] = -Constants.SAFE_ZONE_SIZE;
+			rightHand[0] = Constants.SAFE_ZONE_SIZE;
+			leftHand[1] = 0;
+			rightHand[1] = 0;
+			leftHand[2] = 0;
+			rightHand[2] = 0;
+			controllerLocation[0] = 0;
+			controllerLocation[1] = 0;
+			controllerLocation[2] = 0;
 		}
 
 	}

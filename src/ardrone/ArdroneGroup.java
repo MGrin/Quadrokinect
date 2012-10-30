@@ -3,8 +3,8 @@ package ardrone;
 import java.util.HashMap;
 
 import utils.Constants;
+import utils.Coordinates;
 
-import com.shigeodayo.ardrone.ARDrone;
 import com.shigeodayo.ardrone.processing.ARDroneForP5;
 
 public class ArdroneGroup {
@@ -14,25 +14,33 @@ public class ArdroneGroup {
 	private boolean connected = true;
 
 	private HashMap<Integer, ARDroneForP5> ardrones = new HashMap<Integer, ARDroneForP5>();
+	private HashMap<Integer, Coordinates> ardronesCoordinates = new HashMap<Integer, Coordinates>();
+	private LocationTracker tracker;
 
 	private boolean inAir = false;
 	private boolean stopped = true;
+	private boolean nav = false;
+	private boolean videoON = false;
+	private byte videoType = Constants.FRONT_CAMERA;
 
 	public ArdroneGroup(int groupID) {
 		id = groupID;
+		tracker = new LocationTracker(this);
 	}
 
 	public int getID() {
 		return id;
 	}
 
-	public ARDrone getARDrone(int id) {
+	public ARDroneForP5 getARDrone(int id) {
 		return ardrones.get(id);
 	}
 
 	public void addArdrone(ARDroneForP5 a, int id) {
-		if (!ardrones.containsKey(id))
+		if (!ardrones.containsKey(id)) {
 			ardrones.put(id, a);
+			ardronesCoordinates.put(id, new Coordinates(0, 0, 0));
+		}
 	}
 
 	public boolean connect() {
@@ -40,9 +48,17 @@ public class ArdroneGroup {
 		if (connected) {
 			for (int i : ardrones.keySet()) {
 				ardrones.get(i).connect(Constants.STARTING_PORT + i);
-				ardrones.get(i).connectNav(Constants.NAV_PORT + i);
-				ardrones.get(i).connectVideo(Constants.VIDEO_PORT + i);
+				if (nav)
+					ardrones.get(i).connectNav(Constants.NAV_PORT + i);
+				if (videoON) {
+					ardrones.get(i).connectVideo(Constants.VIDEO_PORT + i);
+					if (videoType == Constants.FRONT_CAMERA)
+						ardrones.get(i).setHorizontalCamera();
+					else if (videoType == Constants.BOTTOM_CAMERA)
+						ardrones.get(i).setVerticalCamera();
+				}
 				ardrones.get(i).start();
+				tracker.start();
 			}
 		}
 		return res;
@@ -166,5 +182,18 @@ public class ArdroneGroup {
 
 	public int getArdroneNumber() {
 		return ardrones.size();
+	}
+
+	public void setNAV(boolean b) {
+		nav = b;
+	}
+
+	public void setVideo(boolean b, byte type) {
+		videoON = b;
+		videoType = type;
+	}
+
+	public boolean isConnected() {
+		return connected;
 	}
 }
