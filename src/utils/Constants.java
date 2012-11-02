@@ -36,4 +36,6 @@ public class Constants {
 	public static final byte FRONT_CAMERA = 0;
 
 	public static final byte BOTTOM_CAMERA = 1;
+
+	public static final float DRONE_SIZE = 2;
 }
