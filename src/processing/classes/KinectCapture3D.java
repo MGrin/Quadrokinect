@@ -63,7 +63,7 @@ public class KinectCapture3D {
 	}
 
 	void drawScene() {
-		axis.display();
+		axis.display(true);
 		parent.fill(0, 0, 0, 0);
 		parent.stroke(255, 255, 255);
 		parent.box(50);

@@ -26,20 +26,25 @@ public class Axis {
 		axisOrgHud = new PVector();
 	}
 
-	public void display() {
-		calculateAxis(50);
+	public void display(boolean orientation) {
+		calculateAxis(50, orientation);
 
 		cam.beginHUD();
 		drawAxis(2);
 		cam.endHUD();
 	}
 
-	void calculateAxis(float length) {
+	void calculateAxis(float length, boolean orientation) {
 		// Store the screen positions for the X, Y, Z and origin
 		axisXHud.set(parent.screenX(length, 0, 0),
 				parent.screenY(length, 0, 0), 0);
-		axisYHud.set(parent.screenX(0, length, 0),
-				parent.screenY(0, length, 0), 0);
+		if (orientation) {
+			axisYHud.set(parent.screenX(0, length, 0),
+					parent.screenY(0, length, 0), 0);
+		} else {
+			axisYHud.set(parent.screenX(0, -length, 0),
+					parent.screenY(0, -length, 0), 0);
+		}
 		axisZHud.set(parent.screenX(0, 0, length),
 				parent.screenY(0, 0, length), 0);
 		axisOrgHud.set(parent.screenX(0, 0, 0), parent.screenY(0, 0, 0), 0);

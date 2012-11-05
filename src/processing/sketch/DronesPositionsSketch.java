@@ -21,13 +21,10 @@ public class DronesPositionsSketch extends PApplet {
 
 	public void draw() {
 		background(0);
-		axis.display();
-		fill(0, 0, 0, 0);
-		stroke(255, 255, 255);
-		box(50);
-		stroke(0);
-		fill(0);
+		axis.display(false);
 
+		fill(255, 255, 255, 120);
+		rect(-50, -50, 100, 100);
 		if (group != null)
 			drawDrones();
 	}
@@ -47,7 +44,7 @@ public class DronesPositionsSketch extends PApplet {
 
 			popMatrix();
 
-			System.out.println("Position: "+group.getPosition(i).getX()+" "+group.getPosition(i).getY()+" "+group.getPosition(i).getZ());
+			//System.out.println("Position: "+group.getPosition(i).getX()+" "+group.getPosition(i).getY()+" "+group.getPosition(i).getZ());
 		}
 	}
 

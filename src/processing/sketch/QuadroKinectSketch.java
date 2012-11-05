@@ -46,7 +46,8 @@ public class QuadroKinectSketch extends PApplet {
 		// Etablishemend of video connection
 		controlGroup.setVideo(true, Constants.FRONT_CAMERA);
 		controlGroup.connect();
-
+		
+		controlGroup.calculateAltitudeError();
 		// Listen to commands, comming from kinect, and redirect them to the
 		// drones group
 		commandsListener = new CommandsListener(controlGroup, this);
@@ -54,8 +55,10 @@ public class QuadroKinectSketch extends PApplet {
 		videoWindow = new VideoSketchWindow();
 		videoWindow.setDrone(controlGroup.getARDrone(0), 0);
 		videoWindow.setVisible(true);
-	
-		controlGroup.calculateAltitudeError();
+		
+		positionsWindow = new DronesPositionsSketchWindow();
+		positionsWindow.setDronesGroup(controlGroup);
+		positionsWindow.setVisible(true);
 	}
 
 	public void draw() {
