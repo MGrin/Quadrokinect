@@ -25,6 +25,6 @@ public class VideoSketchWindow extends JFrame {
 
 	public void setDrone(ARDroneForP5 drone, int id) {
 		sketch.setDrone(drone);
-		setTitle("Video from drone " + Constants.IP_ADDRESS_MASK + id);
+		setTitle("Video from drone " + id);
 	}
 }

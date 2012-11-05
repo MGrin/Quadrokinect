@@ -19,7 +19,7 @@ public class DronesPositionsSketchWindow extends JFrame {
 		sketch = new DronesPositionsSketch();
 		sketch.init();
 		add(sketch);
-		pack();
+		setSize(720, 720);
 		setTitle("Positions");
 	}
 	

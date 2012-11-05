@@ -2,13 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/ARDRoneForP5_Modified.jar"/>
-	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/Processing/core.jar"/>
-	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/peasycam/library/peasycam.jar"/>
-	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/oscP5.jar"/>
-	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/javacvPro/library/javacv.jar"/>
-	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/javacvPro/library/javacvPro.jar"/>
-	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/javacvPro/library/NyAR4psg.jar"/>
-	<classpathentry kind="lib" path="/home/mgrin/workspace/Quadrokinect/libs/javacvPro/library/NyARToolkit.jar"/>
+	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/libs/ARDRoneForP5_Modified.jar"/>
+	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/libs/oscP5.jar"/>
+	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/libs/javacvPro/library/javacv.jar"/>
+	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/libs/javacvPro/library/javacvPro.jar"/>
+	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/libs/javacvPro/library/NyAR4psg.jar"/>
+	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/libs/javacvPro/library/NyARToolkit.jar"/>
+	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/libs/peasycam/library/peasycam.jar"/>
+	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/libs/Processing/core.jar"/>
+	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/libs/SimpleOpenNI/SimpleOpenNI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

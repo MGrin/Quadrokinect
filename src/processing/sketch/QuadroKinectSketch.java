@@ -51,20 +51,16 @@ public class QuadroKinectSketch extends PApplet {
 		// drones group
 		commandsListener = new CommandsListener(controlGroup, this);
 
-		/*videoWindow = new VideoSketchWindow();
+		videoWindow = new VideoSketchWindow();
 		videoWindow.setDrone(controlGroup.getARDrone(0), 0);
-		videoWindow.setVisible(true);*/
-		
-		positionsWindow = new DronesPositionsSketchWindow();
-		positionsWindow.setDronesGroup(controlGroup);
-		positionsWindow.setVisible(true);
-		
+		videoWindow.setVisible(true);
+	
 		controlGroup.calculateAltitudeError();
 	}
 
 	public void draw() {
 		controller.display();
-		controlGroup.updatePositions();
+		//controlGroup.updatePositions();
 	}
 
 	public int getUserTrackedID() {

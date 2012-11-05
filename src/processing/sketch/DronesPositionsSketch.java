@@ -37,14 +37,16 @@ public class DronesPositionsSketch extends PApplet {
 			pushMatrix();
 
 			fill(255);
-			translate((int) (group.getPosition(i).getX()),
-					(int) (group.getPosition(i).getY()),
-					(int) (group.getPosition(i).getZ() - group.getAltitudeError(i)/100));
+			translate(
+					(int) (group.getPosition(i).getX() / Constants.POSITION_SCALE),
+					(int) (group.getPosition(i).getY()/Constants.POSITION_SCALE),
+					(int) (group.getPosition(i).getZ()/Constants.POSITION_SCALE - group
+							.getAltitudeError(i) / Constants.POSITION_SCALE));
 			sphere(Constants.DRONE_SIZE);
 			fill(0);
 
 			popMatrix();
-			
+
 			System.out.println("Position: "+group.getPosition(i).getX()+" "+group.getPosition(i).getY()+" "+group.getPosition(i).getZ());
 		}
 	}

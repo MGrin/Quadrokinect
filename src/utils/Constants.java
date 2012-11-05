@@ -12,7 +12,7 @@ public class Constants {
 
 	public static final float MIN_DISTANCE_BETWEEN_HANDS = 5;
 
-	public static final float SPEED_SCALE = 1.3f;
+	public static final float SPEED_SCALE = 1.5f;
 
 	public static final int MENU_ZONE_STEP = 2;
 	public static final float MENU_ZONE_DELTA = (float) (Math.PI / MENU_ZONE_STEP);
@@ -38,4 +38,6 @@ public class Constants {
 	public static final byte BOTTOM_CAMERA = 1;
 
 	public static final float DRONE_SIZE = 2;
+
+	public static final float POSITION_SCALE = 100f;
 }

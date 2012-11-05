@@ -1,6 +1,7 @@
 package ardrone;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import utils.Constants;
 import utils.Position;
@@ -15,14 +16,13 @@ public class ArdroneGroup {
 
 	private HashMap<Integer, ARDroneForP5> ardrones = new HashMap<Integer, ARDroneForP5>();
 	private HashMap<Integer, Position> positions = new HashMap<Integer, Position>();
+	private LinkedList<Float> altitudeErrors = new LinkedList<Float>();
 
 	private boolean inAir = false;
 	private boolean stopped = true;
 	private boolean nav = false;
 	private boolean videoON = false;
 	private byte videoType = Constants.FRONT_CAMERA;
-
-	private float altitudeError = 0;
 
 	public ArdroneGroup(int groupID) {
 		id = groupID;
@@ -47,7 +47,8 @@ public class ArdroneGroup {
 	public void addArdrone(ARDroneForP5 a, int id) {
 		if (!ardrones.containsKey(id)) {
 			ardrones.put(id, a);
-			positions.put(id, new Position());
+			setPosition(id, new Position());
+			a.setMaxAltitude(6000);
 		}
 	}
 
@@ -225,17 +226,19 @@ public class ArdroneGroup {
 			float[] speed = getARDrone(i).getVelocity();
 			float alt = getARDrone(i).getAltitude();
 			Position p = positions.get(i);
-			p.setX(p.getX() + speed[0] / 100);
-			p.setY(p.getY() + speed[1] / 100);
-			p.setZ(alt/100);
+			p.setX(p.getX() + speed[0]);
+			p.setY(p.getY() + speed[1]);
+			p.setZ(alt);
 		}
 	}
 
 	public void calculateAltitudeError() {
-		altitudeError = ardrones.get(0).getAltitude();
+		for (ARDroneForP5 drone : ardrones.values()) {
+			altitudeErrors.addLast(drone.getAltitude());
+		}
 	}
 
 	public float getAltitudeError(int i) {
-		return altitudeError;
+		return altitudeErrors.get(i);
 	}
 }

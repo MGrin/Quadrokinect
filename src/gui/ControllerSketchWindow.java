@@ -11,7 +11,7 @@ public class ControllerSketchWindow {
 		QuadroKinectSketch sketch = new QuadroKinectSketch();
 		frame.add(sketch);
 		sketch.init();
-		frame.pack();
+		frame.setSize(720, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setTitle("Controller");

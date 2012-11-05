@@ -24,7 +24,7 @@ public class KinectCapture3D {
 	}
 
 	public void setup() {
-		parent.size(400, 400, PConstants.P3D);
+		parent.size(700, 700, PConstants.P3D);
 		parent.background(0, 0, 0);
 
 		axis = new Axis(parent);
