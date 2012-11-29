@@ -48,4 +48,12 @@ public class Position {
 	private void calculateNorme() {
 		norme = (float) Math.sqrt(x * x + y * y + z * z);
 	}
+
+	public float[] getFloatArray() {
+		float[] res = new float[3];
+		res[0] = x;
+		res[1] = y;
+		res[2] = z;
+		return res;
+	}
 }

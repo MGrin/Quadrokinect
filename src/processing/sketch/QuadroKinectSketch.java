@@ -1,14 +1,14 @@
 package processing.sketch;
 
-import gui.DronesPositionsSketchWindow;
+import gui.PositionsSketchWindow;
 import gui.VideoSketchWindow;
 
 import com.shigeodayo.ardrone.processing.ARDroneForP5;
 
 import ardrone.ArdroneGroup;
-import listeners.CommandsListener;
-import listeners.OscListener;
-import processing.classes.KinectCapture3D;
+import listeners.oneController.CommandsListener;
+import listeners.oneController.OscListener;
+import processing.classes.oneController.KinectCapture3D;
 import processing.core.PApplet;
 import utils.Constants;
 import utils.ControllerEnum;
@@ -26,7 +26,7 @@ public class QuadroKinectSketch extends PApplet {
 
 	VideoSketchWindow videoWindow;
 	
-	DronesPositionsSketchWindow positionsWindow;
+	PositionsSketchWindow positionsWindow;
 
 	private int userTrackedID = -1;
 
@@ -37,33 +37,23 @@ public class QuadroKinectSketch extends PApplet {
 		// Listener of OSC messages, comming from OSCeleton
 		oscListener = new OscListener(this);
 
-		// Group of drones
-		controlGroup = new ArdroneGroup(0);
+		
 		// Adding drones in this group
 		addARDrones(controlGroup, 1);
 		// Etablishement of control connection
 		controlGroup.setNAV(true);
 		// Etablishemend of video connection
-		controlGroup.setVideo(true, Constants.FRONT_CAMERA);
+		controlGroup.setVideo(true);
 		controlGroup.connect();
-		
-		controlGroup.calculateAltitudeError();
+
 		// Listen to commands, comming from kinect, and redirect them to the
 		// drones group
 		commandsListener = new CommandsListener(controlGroup, this);
-
-		videoWindow = new VideoSketchWindow();
-		videoWindow.setDrone(controlGroup.getARDrone(0), 0);
-		videoWindow.setVisible(true);
-		
-		positionsWindow = new DronesPositionsSketchWindow();
-		positionsWindow.setDronesGroup(controlGroup);
-		positionsWindow.setVisible(true);
 	}
 
 	public void draw() {
 		controller.display();
-		//controlGroup.updatePositions();
+		controlGroup.updatePositions();
 	}
 
 	public int getUserTrackedID() {
@@ -93,5 +83,13 @@ public class QuadroKinectSketch extends PApplet {
 			ARDroneForP5 drone = new ARDroneForP5(Constants.IP_ADDRESS_MASK + i);
 			group.addArdrone(drone, i - 3);
 		}
+	}
+
+	public ArdroneGroup getArdrones() {
+		return controlGroup;
+	}
+	
+	public QuadroKinectSketch(){
+		controlGroup = new ArdroneGroup(0);
 	}
 }

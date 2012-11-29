@@ -40,4 +40,6 @@ public class Constants {
 	public static final float DRONE_SIZE = 2;
 
 	public static final float POSITION_SCALE = 100f;
+
+	public static final int MINIMAL_SAFE_DISTANCE = 1;
 }

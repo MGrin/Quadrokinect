@@ -3,6 +3,7 @@ package ardrone;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import utils.Calculus;
 import utils.Constants;
 import utils.Position;
 
@@ -22,7 +23,6 @@ public class ArdroneGroup {
 	private boolean stopped = true;
 	private boolean nav = false;
 	private boolean videoON = false;
-	private byte videoType = Constants.FRONT_CAMERA;
 
 	public ArdroneGroup(int groupID) {
 		id = groupID;
@@ -63,10 +63,6 @@ public class ArdroneGroup {
 						ardrones.get(i).connectNav(Constants.NAV_PORT + i);
 					if (videoON) {
 						ardrones.get(i).connectVideo(Constants.VIDEO_PORT + i);
-						if (videoType == Constants.FRONT_CAMERA)
-							ardrones.get(i).setHorizontalCamera();
-						else if (videoType == Constants.BOTTOM_CAMERA)
-							ardrones.get(i).setVerticalCamera();
 					}
 					ardrones.get(i).start();
 				} else {
@@ -74,6 +70,7 @@ public class ArdroneGroup {
 							+ Constants.IP_ADDRESS_MASK + i);
 				}
 			}
+			calculateAltitudeError();
 		}
 		return hasConnection;
 	}
@@ -171,7 +168,6 @@ public class ArdroneGroup {
 	public void takeOff() {
 		// System.out.println("TakeOff");
 		if (connected) {
-			int arId = ardrones.keySet().iterator().next();
 			for (ARDroneForP5 a : ardrones.values()) {
 				a.takeOff();
 				// System.out.println(Constants.IP_ADDRESS_MASK + arId+
@@ -185,7 +181,6 @@ public class ArdroneGroup {
 	public void landing() {
 		// System.out.println("Landing");
 		if (connected) {
-			int arId = ardrones.keySet().iterator().next();
 			for (ARDroneForP5 a : ardrones.values()) {
 				a.landing();
 				// System.out.println(Constants.IP_ADDRESS_MASK + arId+
@@ -205,16 +200,18 @@ public class ArdroneGroup {
 	}
 
 	public int getArdroneNumber() {
-		return ardrones.size();
+		if (ardrones.size() > 0)
+			return ardrones.size();
+		else
+			return 1;
 	}
 
 	public void setNAV(boolean b) {
 		nav = b;
 	}
 
-	public void setVideo(boolean b, byte type) {
+	public void setVideo(boolean b) {
 		videoON = b;
-		videoType = type;
 	}
 
 	public boolean isConnected() {
@@ -222,14 +219,27 @@ public class ArdroneGroup {
 	}
 
 	public void updatePositions() {
-		for (int i = 0; i < getArdroneNumber(); i++) {
-			float[] speed = getARDrone(i).getVelocity();
-			float alt = getARDrone(i).getAltitude();
-			Position p = positions.get(i);
-			p.setX(p.getX() + speed[0]);
-			p.setY(p.getY() + speed[1]);
-			p.setZ(alt);
+		if (connected) {
+			for (int i = 0; i < getArdroneNumber(); i++) {
+				if (noCollision(i)) {
+					float alt = getARDrone(i).getAltitude();
+					Position p = positions.get(i);
+					//TODO
+					p.setZ(alt);
+				}
+			}
 		}
+	}
+
+	private boolean noCollision(int i) {
+		boolean rest = true;
+		for (int n = i + 1; n < getArdroneNumber(); n++) {
+			if (Calculus.getDistance(positions.get(i).getFloatArray(),
+					positions.get(n).getFloatArray()) < Constants.MINIMAL_SAFE_DISTANCE) {
+				return false;
+			}
+		}
+		return rest;
 	}
 
 	public void calculateAltitudeError() {
@@ -240,5 +250,11 @@ public class ArdroneGroup {
 
 	public float getAltitudeError(int i) {
 		return altitudeErrors.get(i);
+	}
+
+	public void toggleCamera() {
+		for(ARDroneForP5 drone: ardrones.values()){
+			drone.toggleCamera();
+		}
 	}
 }

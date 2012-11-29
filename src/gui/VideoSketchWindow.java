@@ -3,9 +3,8 @@ package gui;
 import javax.swing.JFrame;
 
 import processing.sketch.ARDroneVideoSketch;
-import utils.Constants;
 
-import com.shigeodayo.ardrone.processing.ARDroneForP5;
+import ardrone.ArdroneGroup;
 
 public class VideoSketchWindow extends JFrame {
 
@@ -16,15 +15,18 @@ public class VideoSketchWindow extends JFrame {
 
 	private ARDroneVideoSketch sketch;
 
-	public VideoSketchWindow() {
+	private VideoSketchWindow(ArdroneGroup group) {
 		sketch = new ARDroneVideoSketch();
+		sketch.calculateRowsAndCols(group.getArdroneNumber());
 		sketch.init();
+		sketch.setGroup(group);
 		add(sketch);
-		pack();
+		setSize(ARDroneVideoSketch.w*sketch.col, ARDroneVideoSketch.h*sketch.row+20);
 	}
 
-	public void setDrone(ARDroneForP5 drone, int id) {
-		sketch.setDrone(drone);
-		setTitle("Video from drone " + id);
+	public static ARDroneVideoSketch show(ArdroneGroup group){
+		VideoSketchWindow window = new VideoSketchWindow(group);
+		window.setVisible(true);
+		return window.sketch;
 	}
 }
