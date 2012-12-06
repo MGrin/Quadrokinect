@@ -20,14 +20,14 @@ package com.shigeodayo.ardrone.command;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import com.shigeodayo.ardrone.manager.AbstractManager;
-
-public class CommandManager extends AbstractManager {
+public class CommandManager implements Runnable {
 
 	public static final String CR = "\r";
 
@@ -40,40 +40,16 @@ public class CommandManager extends AbstractManager {
 	private boolean continuance = false;
 	private String command = null;
 
+	private InetAddress inetaddr;
+
 	/** speed */
 	private float speed = 0.05f;// 0.01f - 1.0f
+
+	private DatagramSocket socket;
 
 	public CommandManager(InetAddress inetaddr) {
 		this.inetaddr = inetaddr;
 		initialize();
-	}
-
-	public void setHorizontalCamera() {
-		// command="AT*ZAP="+(seq++)+",0";
-		command = "AT*CONFIG=" + (seq++) + ",\"video:video_channel\",\"0\"";
-		continuance = false;
-		// setCommand("AT*ZAP="+(seq++)+",0", false);
-	}
-
-	public void setVerticalCamera() {
-		// command="AT*ZAP="+(seq++)+",1";
-		command = "AT*CONFIG=" + (seq++) + ",\"video:video_channel\",\"1\"";
-		continuance = false;
-		// setCommand("AT*ZAP="+(seq++)+",1", false);
-	}
-
-	public void setHorizontalCameraWithVertical() {
-		// command="AT*ZAP="+(seq++)+",2";
-		command = "AT*CONFIG=" + (seq++) + ",\"video:video_channel\",\"2\"";
-		continuance = false;
-		// setCommand("AT*ZAP="+(seq++)+",2", false);
-	}
-
-	public void setVerticalCameraWithHorizontal() {
-		// command="AT*ZAP="+(seq++)+",3";
-		command = "AT*CONFIG=" + (seq++) + ",\"video:video_channel\",\"3\"";
-		continuance = false;
-		// setCommand("AT*ZAP="+(seq++)+",3", false);
 	}
 
 	public void toggleCamera() {
@@ -105,119 +81,9 @@ public class CommandManager extends AbstractManager {
 		landing = true;
 	}
 
-	public void forward() {
-		command = "AT*PCMD=" + (seq++) + ",1,0," + intOfFloat(-speed) + ",0,0"
-				+ "\r" + "AT*REF=" + (seq++) + ",290718208";
-		continuance = true;
-		// setCommand("AT*PCMD="+(seq++)+",1,0,"+intOfFloat(-speed)+",0,0"+"\r"+"AT*REF="
-		// + (seq++) + ",290718208", true);
-	}
-
-	public void forward(int speed) {
-		setSpeed(speed);
-		forward();
-	}
-
-	public void backward() {
-		command = "AT*PCMD=" + (seq++) + ",1,0," + intOfFloat(speed) + ",0,0"
-				+ "\r" + "AT*REF=" + (seq++) + ",290718208";
-		continuance = true;
-	}
-
-	public void backward(int speed) {
-		setSpeed(speed);
-		backward();
-	}
-
-	public void spinRight() {
-		command = "AT*PCMD=" + (seq++) + ",1,0,0,0," + intOfFloat(speed) + "\r"
-				+ "AT*REF=" + (seq++) + ",290718208";
-		continuance = true;
-	}
-
-	public void spinRight(int speed) {
-		setSpeed(speed);
-		spinRight();
-	}
-
-	public void spinLeft() {
-		command = "AT*PCMD=" + (seq++) + ",1,0,0,0," + intOfFloat(-speed)
-				+ "\r" + "AT*REF=" + (seq++) + ",290718208";
-		continuance = true;
-	}
-
-	public void spinLeft(int speed) {
-		setSpeed(speed);
-		spinLeft();
-	}
-
-	public void up() {
-		command = "AT*PCMD=" + (seq++) + ",1," + intOfFloat(0) + ","
-				+ intOfFloat(0) + "," + intOfFloat(speed) + "," + intOfFloat(0)
-				+ "\r" + "AT*REF=" + (seq++) + ",290718208";
-		continuance = true;
-	}
-
-	public void up(int speed) {
-		setSpeed(speed);
-		up();
-	}
-
-	public void down() {
-		command = "AT*PCMD=" + (seq++) + ",1," + intOfFloat(0) + ","
-				+ intOfFloat(0) + "," + intOfFloat(-speed) + ","
-				+ intOfFloat(0) + "\r" + "AT*REF=" + (seq++) + ",290718208";
-		continuance = true;
-	}
-
-	public void down(int speed) {
-		setSpeed(speed);
-		down();
-	}
-
-	public void goRight() {
-		command = "AT*PCMD=" + (seq++) + ",1," + intOfFloat(speed) + ",0,0,0"
-				+ "\r" + "AT*REF=" + (seq++) + ",290718208";
-		continuance = true;
-	}
-
-	public void goRight(int speed) {
-		setSpeed(speed);
-		goRight();
-	}
-
-	public void goLeft() {
-		command = "AT*PCMD=" + (seq++) + ",1," + intOfFloat(-speed) + ",0,0,0"
-				+ "\r" + "AT*REF=" + (seq++) + ",290718208";
-		continuance = true;
-	}
-
-	public void goLeft(int speed) {
-		setSpeed(speed);
-		goLeft();
-	}
-
 	public void stop() {
 		command = "AT*PCMD=" + (seq++) + ",1,0,0,0,0";
 		continuance = true;
-	}
-
-	public void setSpeed(int speed) {
-		if (speed > 100)
-			speed = 100;
-		else if (speed < 1)
-			speed = 1;
-
-		this.speed = (float) (speed / 100.0);
-	}
-
-	public float transform(int speed) {
-		if (speed > 100)
-			speed = 100;
-		else if (speed < -100)
-			speed = 1;
-
-		return (float) (speed / 100.0);
 	}
 
 	public void enableVideoData(OutputStream outputStream) throws IOException {
@@ -231,8 +97,6 @@ public class CommandManager extends AbstractManager {
 		command = "AT*CONFIG=" + (seq++) + ",\"general:navdata_demo\",\"TRUE\""
 				+ CR + "AT*FTRIM=" + (seq++);
 		continuance = false;
-		// setCommand("AT*CONFIG="+(seq++)+",\"general:navdata_demo\",\"TRUE\""+CR+"AT*FTRIM="+(seq++),
-		// false);
 	}
 
 	public void sendControlAck() {
@@ -243,11 +107,6 @@ public class CommandManager extends AbstractManager {
 
 	public int getSpeed() {
 		return (int) (speed * 100);
-	}
-
-	public void disableAutomaticVideoBitrate() {
-		command = "AT*CONFIG=" + (seq++) + ",\"video:bitrate_ctrl_mode\",\"0\"";
-		continuance = false;
 	}
 
 	public void disableAutomaticVideoBitrate(OutputStream outputStream)
@@ -269,9 +128,6 @@ public class CommandManager extends AbstractManager {
 		continuance = false;
 	}
 
-	/*
-	 * Thanks, Tarquínio.
-	 */
 	public void move3D(int speedX, int speedY, int speedZ, int speedSpin) {
 		if (speedX > 100)
 			speedX = 100;
@@ -326,8 +182,8 @@ public class CommandManager extends AbstractManager {
 
 	private void initARDrone() {
 		sendCommand("AT*CONFIG=" + (seq++)
-				+ ",\"general:navdata_demo\",\"TRUE\"" + CR + "AT*FTRIM="
-				+ (seq++));// 1
+				+ ",\"general:navdata_demo\",\"TRUE\"");
+		setHorizont();
 		sendCommand("AT*PMODE=" + (seq++) + ",2" + CR + "AT*MISC=" + (seq++)
 				+ ",2,20,2000,3000" + CR + "AT*FTRIM=" + (seq++) + CR
 				+ "AT*REF=" + (seq++) + ",290717696");// 2-5
@@ -335,8 +191,12 @@ public class CommandManager extends AbstractManager {
 				+ (seq++) + ",290717696" + CR + "AT*COMWDG=" + (seq++));// 6-8
 		sendCommand("AT*PCMD=" + (seq++) + ",1,0,0,0,0" + CR + "AT*REF="
 				+ (seq++) + ",290717696" + CR + "AT*COMWDG=" + (seq++));// 6-8
-		sendCommand("AT*FTRIM=" + (seq++));
+		setHorizont();
 		System.out.println("Initialize completed!");
+	}
+
+	public void setHorizont() {
+		sendCommand("AT*FTRIM=" + (seq++));
 	}
 
 	/*
@@ -348,18 +208,32 @@ public class CommandManager extends AbstractManager {
 		sendCommand(this.command);
 	}
 
+	public boolean connect(int port) {
+		try {
+			socket = new DatagramSocket(port);
+			socket.setSoTimeout(3000);
+		} catch (SocketException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	public void close() {
+		socket.close();
+	}
+
 	private synchronized void sendCommand(String command) {
-		// System.out.println(command);
+		System.out.println(command);
 		byte[] buffer = (command + CR).getBytes();
 		// System.out.println(command);
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length,
 				inetaddr, 5556);
 		try {
 			socket.send(packet);
-			Thread.sleep(20);// <50ms
+			Thread.sleep(30);// latency between commands
 		} catch (IOException e) {
 			e.printStackTrace();
-
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -369,4 +243,5 @@ public class CommandManager extends AbstractManager {
 		fb.put(0, f);
 		return ib.get(0);
 	}
+
 }

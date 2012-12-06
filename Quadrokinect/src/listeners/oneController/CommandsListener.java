@@ -35,48 +35,36 @@ public class CommandsListener implements GeneralCommandListener {
 			performClack();
 		} else {
 			if (controlGroup.inAir()) {
-
-				// if (!controllerIsInSafeZone(controllerLocation)) {
-				// performDirectionChange(controllerLocation);
-				// } else {
-				// float angle = Calculus.calculateAngleBetween(rightHand[2]);
-				// if (!controlGroup.isStopped()) {
-				// controlGroup.stop();
-				// for (int i = 0; i < 6; i++) {
-				// speeds[i] = 0;
-				// }
-				// }
-				// if (Math.abs(angle) >= Constants.SAFE_ANGLE
-				// && (int) (angle * Constants.SPIN_SCALE) != rotation) {
-				// rotation = (int) (angle * Constants.SPIN_SCALE);
-				// performRotationOfEachDrone(rightHand);
-				// }
-				// }
 				int speedX = 0;
 				int speedY = 0;
 				int speedZ = 0;
-
-				if (!controllerIsInSafeZone(controllerLocation)) {
-					speedX = -(int) ((controllerLocation[2]) * Constants.SPEED_SCALE);
-					speedY = -(int) ((controllerLocation[0]) * Constants.SPEED_SCALE);
-					speedZ = -(int) ((controllerLocation[1]) * Constants.SPEED_SCALE);
-				}
+				int speedAng = 0;
 
 				float angspeed = Calculus.calculateAngleBetween(rightHand[2]);
-				int speedAng = 0;
-				if (Math.abs(angspeed) >= Constants.SAFE_ANGLE) {
-					speedAng = (int) (angspeed * Constants.SPIN_SCALE);
+
+				if (!controllerIsInSafeZone(controllerLocation)) {
+					speedX = (int) ((controllerLocation[2]) * Constants.SPEED_SCALE);
+					speedY = (int) ((controllerLocation[0]) * Constants.SPEED_SCALE);
+					speedZ = -(int) ((controllerLocation[1]) * Constants.SPEED_SCALE);
+				} else {
+					if (speeds[0] != 0 || speeds[1] != 0 || speeds[2] != 0
+							|| speeds[3] != 0) {
+						controlGroup.stop();
+						for (int i = 0; i < 4; i++)
+							speeds[i] = 0;
+					}
+					if (Math.abs(angspeed) >= Constants.SAFE_ANGLE) {
+						speedAng = (int) (angspeed * Constants.SPIN_SCALE);
+					}
 				}
+
 				if (!(speeds[0] == speedX && speeds[1] == speedY
 						&& speeds[2] == speedZ && speeds[3] == speedAng)) {
-					controlGroup.move3d(speedX, speedY, speedZ, speedAng);
 					speeds[0] = speedX;
 					speeds[1] = speedY;
 					speeds[2] = speedZ;
 					speeds[3] = speedAng;
-				}
-				if (!(speeds[0] == 0 && speeds[1] == 0 && speeds[2] == 0 && speeds[3] == 0)) {
-					controlGroup.stop();
+					controlGroup.move3d(speedX, speedY, speedZ, speedAng);
 				}
 			}
 		}
@@ -95,84 +83,6 @@ public class CommandsListener implements GeneralCommandListener {
 			nbOfClacks++;
 		}
 	}
-
-	// public void performDirectionChange(float[] controllerLocation) {
-	// if (controllerLocation[0] > Constants.SAFE_ZONE_SIZE / 2
-	// && speeds[0] != (int) ((Math.abs(controllerLocation[0]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE)) {
-	// controlGroup
-	// .goRight((int) ((Math.abs(controllerLocation[0]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE));
-	// speeds[0] = (int) ((Math.abs(controllerLocation[0]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE);
-	// for (int i = 1; i < speeds.length; i++) {
-	// speeds[i] = 0;
-	// }
-	// }
-	// if (controllerLocation[0] < -Constants.SAFE_ZONE_SIZE / 2
-	// && speeds[1] != (int) ((Math.abs(controllerLocation[0]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE)) {
-	// controlGroup
-	// .goLeft((int) ((Math.abs(controllerLocation[0]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE));
-	// for (int i = 0; i < speeds.length; i++)
-	// speeds[i] = 0;
-	// speeds[1] = (int) ((Math.abs(controllerLocation[0]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE);
-	// }
-	// if (controllerLocation[1] > Constants.SAFE_ZONE_SIZE / 2
-	// && speeds[2] != (int) ((Math.abs(controllerLocation[1]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE)) {
-	// controlGroup
-	// .down((int) ((Math.abs(controllerLocation[1]) - Constants.SAFE_ZONE_SIZE
-	// / 2) * Constants.SPEED_SCALE));
-	// for (int i = 0; i < speeds.length; i++)
-	// speeds[i] = 0;
-	// speeds[2] = (int) ((Math.abs(controllerLocation[1]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE);
-	// }
-	// if (controllerLocation[1] < -Constants.SAFE_ZONE_SIZE / 2
-	// && speeds[3] != (int) ((Math.abs(controllerLocation[1]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE)) {
-	// controlGroup
-	// .up((int) ((Math.abs(controllerLocation[1]) - Constants.SAFE_ZONE_SIZE /
-	// 2) * Constants.SPEED_SCALE));
-	// for (int i = 0; i < speeds.length; i++)
-	// speeds[i] = 0;
-	// speeds[3] = (int) ((Math.abs(controllerLocation[1]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE);
-	// }
-	// if (controllerLocation[2] > Constants.SAFE_ZONE_SIZE / 2
-	// && speeds[4] != (int) ((Math.abs(controllerLocation[2]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE)) {
-	// controlGroup
-	// .backward((int) ((Math.abs(controllerLocation[2]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE));
-	// for (int i = 0; i < speeds.length; i++)
-	// speeds[i] = 0;
-	// speeds[4] = (int) ((Math.abs(controllerLocation[2]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE);
-	// }
-	// if (controllerLocation[2] < -Constants.SAFE_ZONE_SIZE / 2
-	// && speeds[5] != (int) ((Math.abs(controllerLocation[2]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE)) {
-	// controlGroup
-	// .forward((int) ((Math.abs(controllerLocation[2]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE));
-	// for (int i = 0; i < speeds.length; i++)
-	// speeds[i] = 0;
-	// speeds[5] = (int) ((Math.abs(controllerLocation[2]) -
-	// Constants.SAFE_ZONE_SIZE / 2) * Constants.SPEED_SCALE);
-	// }
-	// }
-
-	// public void performRotationOfEachDrone(float[] rightHand) {
-	// if (rightHand[2] > 0) {
-	// controlGroup.spinRight(rotation);
-	// } else {
-	// controlGroup.spinLeft(rotation);
-	// }
-	// }
 
 	boolean controllerIsInSafeZone(float[] controllerLocation) {
 		return controllerLocation[0] * controllerLocation[0]

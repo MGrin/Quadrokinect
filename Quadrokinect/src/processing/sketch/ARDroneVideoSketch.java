@@ -1,9 +1,9 @@
 package processing.sketch;
 
+import com.shigeodayo.ardrone.ARDrone;
+
 import jp.nyatla.nyar4psg.MultiMarker;
 import jp.nyatla.nyar4psg.NyAR4PsgConfig;
-
-import com.shigeodayo.ardrone.processing.ARDroneForP5;
 
 import ardrone.ArdroneGroup;
 
@@ -39,7 +39,7 @@ public class ARDroneVideoSketch extends PApplet {
 		temp = getMatrix();
 	}
 
-	public void drawImage(ARDroneForP5 drone) {
+	public void drawImage(ARDrone drone) {
 		PImage im = drone.getVideoImage(true);
 		if (im != null) {
 			im.resize(w, h);

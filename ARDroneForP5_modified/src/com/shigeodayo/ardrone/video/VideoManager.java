@@ -23,7 +23,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import com.shigeodayo.ardrone.command.CommandManager;
-import com.shigeodayo.ardrone.manager.AbstractManager;
 import com.xuggle.xuggler.Global;
 import com.xuggle.xuggler.IContainer;
 import com.xuggle.xuggler.IPacket;
@@ -35,13 +34,15 @@ import com.xuggle.xuggler.IVideoResampler;
 import com.xuggle.xuggler.Utils;
 import com.xuggle.xuggler.ICodec;
 
-public class VideoManager extends AbstractManager {
+public class VideoManager implements Runnable {
 
 	private CommandManager manager = null;
 
 	private ImageListener listener = null;
 
 	private Socket socket;
+
+	private InetAddress inetaddr;
 
 	public VideoManager(InetAddress inetaddr, CommandManager manager) {
 		this.inetaddr = inetaddr;
@@ -172,8 +173,8 @@ public class VideoManager extends AbstractManager {
 				try {
 					int offset = 0;
 					while (offset < packet.getSize()) {
-//						System.out
-//								.println("VideoManager.decode(): decode one image");
+						// System.out
+						// .println("VideoManager.decode(): decode one image");
 						/*
 						 * Now, we decode the video, checking for any errors.
 						 */
@@ -191,8 +192,8 @@ public class VideoManager extends AbstractManager {
 						 * complete picture from the decoder
 						 */
 						if (picture.isComplete()) {
-//							System.out
-//									.println("VideoManager.decode(): image complete");
+							// System.out
+							// .println("VideoManager.decode(): image complete");
 							IVideoPicture newPic = picture;
 							/*
 							 * If the resampler is not null, that means we

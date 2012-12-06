@@ -1,9 +1,9 @@
 package processing.sketch;
 
+import com.shigeodayo.ardrone.ARDrone;
+
 import gui.PositionsSketchWindow;
 import gui.VideoSketchWindow;
-
-import com.shigeodayo.ardrone.processing.ARDroneForP5;
 
 import ardrone.ArdroneGroup;
 import listeners.oneController.CommandsListener;
@@ -40,11 +40,7 @@ public class QuadroKinectSketch extends PApplet {
 		
 		// Adding drones in this group
 		addARDrones(controlGroup, 1);
-		// Etablishement of control connection
-		controlGroup.setNAV(true);
-		// Etablishemend of video connection
-		controlGroup.setVideo(true);
-		controlGroup.setMaxAltitude(4);
+		controlGroup.setMaxAltitude(10);
 		controlGroup.connect();
 
 		// Listen to commands, comming from kinect, and redirect them to the
@@ -81,7 +77,7 @@ public class QuadroKinectSketch extends PApplet {
 
 	public void addARDrones(ArdroneGroup group, int nb) {
 		for (int i = 3; i < nb + 3; i++) {
-			ARDroneForP5 drone = new ARDroneForP5(Constants.IP_ADDRESS_MASK + i);
+			ARDrone drone = new ARDrone(Constants.IP_ADDRESS_MASK + i);
 			group.addArdrone(drone, i - 3);
 		}
 	}

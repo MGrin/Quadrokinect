@@ -17,10 +17,14 @@ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PRO
  */
 package com.shigeodayo.ardrone;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.StringTokenizer;
+
+import processing.core.PConstants;
+import processing.core.PImage;
 
 import com.shigeodayo.ardrone.command.CommandManager;
 import com.shigeodayo.ardrone.navdata.AttitudeListener;
@@ -32,7 +36,8 @@ import com.shigeodayo.ardrone.navdata.VelocityListener;
 import com.shigeodayo.ardrone.video.ImageListener;
 import com.shigeodayo.ardrone.video.VideoManager;
 
-public class ARDrone implements ARDroneInterface {
+public class ARDrone implements ARDroneInterface, ImageListener,
+		AttitudeListener, BatteryListener, StateListener, VelocityListener {
 
 	/** default ip address */
 	private static final String IP_ADDRESS = "192.168.1.1";
@@ -51,6 +56,21 @@ public class ARDrone implements ARDroneInterface {
 	private BatteryListener batteryListener = null;
 	private StateListener stateListener = null;
 	private VelocityListener velocityListener = null;
+
+	private BufferedImage videoImage = null;
+
+	private float pitch = 0.0f;
+	private float roll = 0.0f;
+	private float yaw = 0.0f;
+	private float altitude = 0.0f;
+
+	private int battery = 0;
+
+	private DroneState state = null;
+
+	private float vx = 0.0f;
+	private float vy = 0.0f;
+	private float[] velocity = new float[2];
 
 	/** constructor */
 	public ARDrone() {
@@ -91,6 +111,7 @@ public class ARDrone implements ARDroneInterface {
 				}
 			}
 		});
+		addImageUpdateListener(this);
 		return videoManager.connect();
 	}
 
@@ -135,7 +156,10 @@ public class ARDrone implements ARDroneInterface {
 				}
 			}
 		});
-
+		addAttitudeUpdateListener(this);
+		addBatteryUpdateListener(this);
+		addStateUpdateListener(this);
+		addVelocityUpdateListener(this);
 		return navdataManager.connect(port);
 	}
 
@@ -160,30 +184,6 @@ public class ARDrone implements ARDroneInterface {
 			new Thread(navdataManager).start();
 	}
 
-	// @Override
-	// public void setHorizontalCamera() {
-	// if(manager!=null)
-	// manager.setHorizontalCamera();
-	// }
-	//
-	// @Override
-	// public void setVerticalCamera() {
-	// if(manager!=null)
-	// manager.setVerticalCamera();
-	// }
-	//
-	// @Override
-	// public void setHorizontalCameraWithVertical() {
-	// if(manager!=null)
-	// manager.setHorizontalCameraWithVertical();
-	// }
-	//
-	// @Override
-	// public void setVerticalCameraWithHorizontal() {
-	// if(manager!=null)
-	// manager.setVerticalCameraWithHorizontal();
-	// }
-
 	@Override
 	public void toggleCamera() {
 		if (manager != null)
@@ -206,108 +206,6 @@ public class ARDrone implements ARDroneInterface {
 	public void reset() {
 		if (manager != null)
 			manager.reset();
-	}
-
-	@Override
-	public void forward() {
-		if (manager != null)
-			manager.forward();
-	}
-
-	@Override
-	public void forward(int speed) {
-		if (manager != null)
-			manager.forward(speed);
-	}
-
-	@Override
-	public void backward() {
-		if (manager != null)
-			manager.backward();
-	}
-
-	@Override
-	public void backward(int speed) {
-		if (manager != null)
-			manager.backward(speed);
-	}
-
-	@Override
-	public void spinRight() {
-		if (manager != null)
-			manager.spinRight();
-	}
-
-	@Override
-	public void spinRight(int speed) {
-		if (manager != null)
-			manager.spinRight(speed);
-	}
-
-	@Override
-	public void spinLeft() {
-		if (manager != null)
-			manager.spinLeft();
-	}
-
-	@Override
-	public void spinLeft(int speed) {
-		if (manager != null)
-			manager.spinLeft(speed);
-	}
-
-	@Override
-	public void up() {
-		if (manager != null)
-			manager.up();
-	}
-
-	@Override
-	public void up(int speed) {
-		if (manager != null)
-			manager.up(speed);
-	}
-
-	@Override
-	public void down() {
-		if (manager != null)
-			manager.down();
-	}
-
-	@Override
-	public void down(int speed) {
-		if (manager != null)
-			manager.down(speed);
-	}
-
-	@Override
-	public void goRight() {
-		if (manager != null)
-			manager.goRight();
-	}
-
-	@Override
-	public void goRight(int speed) {
-		if (manager != null)
-			manager.goRight(speed);
-	}
-
-	@Override
-	public void goLeft() {
-		if (manager != null)
-			manager.goLeft();
-	}
-
-	@Override
-	public void goLeft(int speed) {
-		if (manager != null)
-			manager.goLeft(speed);
-	}
-
-	@Override
-	public void setSpeed(int speed) {
-		if (manager != null)
-			manager.setSpeed(speed);
 	}
 
 	@Override
@@ -416,5 +314,111 @@ public class ARDrone implements ARDroneInterface {
 			e.printStackTrace();
 		}
 		return inetaddr;
+	}
+
+	public PImage getVideoImage(boolean autoResize) {
+		if (videoImage == null)
+			return null;
+		if (autoResize) {
+			if (videoImage.getWidth() == 176) {
+				return convertToPImage(resize(videoImage, 320, 240));
+			}
+		}
+		return convertToPImage(videoImage);
+
+	}
+
+	@Override
+	public void imageUpdated(BufferedImage image) {
+		this.videoImage = image;
+	}
+
+	@Override
+	public void velocityChanged(float vx, float vy, float vz) {
+		this.vx = vx;
+		this.vy = vy;
+		velocity[0] = vx;
+		velocity[1] = vy;
+	}
+
+	@Override
+	public void stateChanged(DroneState state) {
+		this.state = state;
+	}
+
+	@Override
+	public void batteryLevelChanged(int percentage) {
+		this.battery = percentage;
+	}
+
+	@Override
+	public void attitudeUpdated(float pitch, float roll, float yaw, int altitude) {
+		this.pitch = pitch;
+		this.yaw = yaw;
+		this.roll = roll;
+		this.altitude = altitude;
+	}
+
+	public float getPitch() {
+		return pitch;
+	}
+
+	public float getRoll() {
+		return roll;
+	}
+
+	public float getYaw() {
+		return yaw;
+	}
+
+	public float getAltitude() {
+		return altitude;
+	}
+
+	public float getVelocityX() {
+		return vx;
+	}
+
+	public float getVelocityY() {
+		return vy;
+	}
+
+	public float[] getVelocity() {
+		return velocity;
+	}
+
+	public int getBatteryPercentage() {
+		return battery;
+	}
+
+	private PImage convertToPImage(BufferedImage bimg) {
+		try {
+			PImage img = new PImage(bimg.getWidth(), bimg.getHeight(),
+					PConstants.ARGB);
+			bimg.getRGB(0, 0, img.width, img.height, img.pixels, 0, img.width);
+			img.updatePixels();
+			return img;
+		} catch (Exception e) {
+			// System.err.println("Can't create image from buffer");
+			// e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * resize bufferedimage
+	 * 
+	 * @param image
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	private BufferedImage resize(BufferedImage image, int width, int height) {
+		BufferedImage resizedImage = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(image, 0, 0, width, height, null);
+		g.dispose();
+		return resizedImage;
 	}
 }

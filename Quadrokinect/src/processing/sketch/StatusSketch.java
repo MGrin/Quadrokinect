@@ -1,6 +1,6 @@
 package processing.sketch;
 
-import com.shigeodayo.ardrone.processing.ARDroneForP5;
+import com.shigeodayo.ardrone.ARDrone;
 
 import processing.core.PApplet;
 
@@ -11,7 +11,7 @@ public class StatusSketch extends PApplet{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	ARDroneForP5 drone;
+	ARDrone drone;
 
 	public void setup(){
 		size(300, 300);
@@ -21,11 +21,11 @@ public class StatusSketch extends PApplet{
 	public void draw(){
 		background(0);
 		if(drone!=null){
-			drone.printARDroneInfo();
+			
 		}
 	}
 	
-	public void setDrone(ARDroneForP5 drone){
+	public void setDrone(ARDrone drone){
 		this.drone = drone;
 	}
 }

@@ -2,9 +2,9 @@ package gui;
 
 import javax.swing.JFrame;
 
-import processing.sketch.StatusSketch;
+import com.shigeodayo.ardrone.ARDrone;
 
-import com.shigeodayo.ardrone.processing.ARDroneForP5;
+import processing.sketch.StatusSketch;
 
 public class StatusSketchWindow extends JFrame {
 
@@ -15,13 +15,13 @@ public class StatusSketchWindow extends JFrame {
 	
 	private StatusSketch sketch;
 
-	public static StatusSketch show(ARDroneForP5 drone) {
+	public static StatusSketch show(ARDrone drone) {
 		StatusSketchWindow window = new StatusSketchWindow(drone);
 		window.setVisible(true);
 		return window.sketch;
 	}
 
-	private StatusSketchWindow(ARDroneForP5 drone) {
+	private StatusSketchWindow(ARDrone drone) {
 		sketch = new StatusSketch();
 		sketch.init();
 		sketch.setDrone(drone);

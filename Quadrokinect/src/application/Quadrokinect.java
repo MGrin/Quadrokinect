@@ -19,7 +19,7 @@ public class Quadrokinect {
 		mainArdroneGroup = ControllerSketchWindow.show();
 		mainVideoSketch = VideoSketchWindow.show(mainArdroneGroup);
 		// mainPositionsSketch = PositionsSketchWindow.show(mainArdroneGroup);
-		mainStatusSketch = StatusSketchWindow.show(mainArdroneGroup
-				.getARDrone(0));
+		// mainStatusSketch = StatusSketchWindow.show(mainArdroneGroup
+		// .getARDrone(0));
 	}
 }

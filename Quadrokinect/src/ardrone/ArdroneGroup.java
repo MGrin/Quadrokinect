@@ -3,11 +3,11 @@ package ardrone;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.shigeodayo.ardrone.ARDrone;
+
 import utils.Calculus;
 import utils.Constants;
 import utils.Position;
-
-import com.shigeodayo.ardrone.processing.ARDroneForP5;
 
 public class ArdroneGroup {
 
@@ -15,14 +15,12 @@ public class ArdroneGroup {
 
 	private boolean connected = true;
 
-	private HashMap<Integer, ARDroneForP5> ardrones = new HashMap<Integer, ARDroneForP5>();
+	private HashMap<Integer, ARDrone> ardrones = new HashMap<Integer, ARDrone>();
 	private HashMap<Integer, Position> positions = new HashMap<Integer, Position>();
 	private LinkedList<Float> altitudeErrors = new LinkedList<Float>();
 
 	private boolean inAir = false;
 	private boolean stopped = true;
-	private boolean nav = false;
-	private boolean videoON = false;
 
 	public ArdroneGroup(int groupID) {
 		id = groupID;
@@ -32,7 +30,7 @@ public class ArdroneGroup {
 		return id;
 	}
 
-	public ARDroneForP5 getARDrone(int id) {
+	public ARDrone getARDrone(int id) {
 		return ardrones.get(id);
 	}
 
@@ -44,7 +42,7 @@ public class ArdroneGroup {
 		positions.put(id, pos);
 	}
 
-	public void addArdrone(ARDroneForP5 a, int id) {
+	public void addArdrone(ARDrone a, int id) {
 		if (!ardrones.containsKey(id)) {
 			ardrones.put(id, a);
 			setPosition(id, new Position());
@@ -59,13 +57,10 @@ public class ArdroneGroup {
 				hasConnection = ardrones.get(i).connect(
 						Constants.STARTING_PORT + i);
 				if (hasConnection) {
-					if (nav)
-						ardrones.get(i).connectNav(Constants.NAV_PORT + i);
-					if (videoON) {
-						System.out.println("Connecting video for "
-								+ Constants.IP_ADDRESS_MASK + i);
-						ardrones.get(i).connectVideo();
-					}
+					ardrones.get(i).connectNav(Constants.NAV_PORT + i);
+					System.out.println("Connecting video for "
+							+ Constants.IP_ADDRESS_MASK + i);
+					ardrones.get(i).connectVideo();
 					ardrones.get(i).start();
 				} else {
 					System.out.println("No connection with ardrone on "
@@ -80,7 +75,7 @@ public class ArdroneGroup {
 	public void safeDrone() {
 		// System.out.println("SafeDrone");
 		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
+			for (ARDrone a : ardrones.values()) {
 				a.stop();
 				a.landing();
 			}
@@ -91,86 +86,16 @@ public class ArdroneGroup {
 	public void stop() {
 		// System.out.println("Stop");
 		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
+			for (ARDrone a : ardrones.values()) {
 				a.stop();
 			}
 		stopped = true;
 	}
 
-	public void up(int speed) {
-		// System.out.println("UP " + speed);
-		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
-				a.up(speed);
-			}
-		stopped = false;
-	}
-
-	public void down(int speed) {
-		// System.out.println("Down " + speed);
-		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
-				a.down(speed);
-			}
-		stopped = false;
-	}
-
-	public void goRight(int speed) {
-		// System.out.println("GoRight " + speed);
-		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
-				a.goRight(speed);
-			}
-		stopped = false;
-	}
-
-	public void goLeft(int speed) {
-		// System.out.println("GoLeft " + speed);
-		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
-				a.goLeft(speed);
-			}
-		stopped = false;
-	}
-
-	public void forward(int speed) {
-		// System.out.println("Forward " + speed);
-		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
-				a.forward(speed);
-			}
-		stopped = false;
-	}
-
-	public void backward(int speed) {
-		// System.out.println("Backward " + speed);
-		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
-				a.backward(speed);
-			}
-		stopped = false;
-	}
-
-	public void spinLeft(int speed) {
-		// System.out.println("SpinLeft " + speed);
-		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
-				a.spinLeft(speed);
-			}
-	}
-
-	public void spinRight(int speed) {
-		// System.out.println("SpinRight " + speed);
-		if (connected)
-			for (ARDroneForP5 a : ardrones.values()) {
-				a.spinRight(speed);
-			}
-	}
-
 	public void takeOff() {
 		// System.out.println("TakeOff");
 		if (connected) {
-			for (ARDroneForP5 a : ardrones.values()) {
+			for (ARDrone a : ardrones.values()) {
 				a.takeOff();
 				// System.out.println(Constants.IP_ADDRESS_MASK + arId+
 				// ": takeOff");
@@ -183,7 +108,7 @@ public class ArdroneGroup {
 	public void landing() {
 		// System.out.println("Landing");
 		if (connected) {
-			for (ARDroneForP5 a : ardrones.values()) {
+			for (ARDrone a : ardrones.values()) {
 				a.landing();
 				// System.out.println(Constants.IP_ADDRESS_MASK + arId+
 				// ": landing");
@@ -206,14 +131,6 @@ public class ArdroneGroup {
 			return ardrones.size();
 		else
 			return 1;
-	}
-
-	public void setNAV(boolean b) {
-		nav = b;
-	}
-
-	public void setVideo(boolean b) {
-		videoON = b;
 	}
 
 	public boolean isConnected() {
@@ -245,7 +162,7 @@ public class ArdroneGroup {
 	}
 
 	public void calculateAltitudeError() {
-		for (ARDroneForP5 drone : ardrones.values()) {
+		for (ARDrone drone : ardrones.values()) {
 			altitudeErrors.addLast(drone.getAltitude());
 		}
 	}
@@ -256,24 +173,24 @@ public class ArdroneGroup {
 
 	public void toggleCamera() {
 		if (connected) {
-			for (ARDroneForP5 drone : ardrones.values()) {
+			for (ARDrone drone : ardrones.values()) {
 				drone.toggleCamera();
 			}
 		}
 	}
 
 	public void move3d(int x, int y, int z, int ang) {
-		System.out.println("x="+x+" y="+y+" z="+z+" ang="+ang);
-		if(connected){
-			for (ARDroneForP5 drone : ardrones.values()) {
+		System.out.println("x=" + x + " y=" + y + " z=" + z + " ang=" + ang);
+		if (connected) {
+			for (ARDrone drone : ardrones.values()) {
 				drone.move3D(x, y, z, ang);
 			}
 		}
 	}
 
 	public void setMaxAltitude(int i) {
-		if(connected){
-			for (ARDroneForP5 drone : ardrones.values()) {
+		if (connected) {
+			for (ARDrone drone : ardrones.values()) {
 				drone.setMaxAltitude(i);
 			}
 		}
