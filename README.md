@@ -16,6 +16,7 @@ Content of this GitHub:
 -Quadrokinect: the project's code. It uses the ARDroneForP5_modified project.
 
 HowTo:
+
 To test the Quadrokinect project, you will need:
 
 	-Kinect
@@ -26,7 +27,7 @@ To test the Quadrokinect project, you will need:
 	-Parrot ARDrone (one or more)
 	-Router (its IP must be 192.168.0.50, the server's (your machine) IP: 192.168.0.1)
 
-	After installing and buying all these components, you have to:
+After installing and buying all these components, you have to:
 	-Connect to each ARDrone via WiFi
 	-Connect to it by telnet:
 		telnet 192.168.1.1
@@ -41,7 +42,7 @@ To test the Quadrokinect project, you will need:
 
 		Of course, all IP settings can be changed, but you will also have to change the code for Quadrokinect.
 
-	Now ARDrones are connected.
+Now ARDrones are connected.
 
 	-Copy the OSCeleton launcher script (Quadrokinect/launcher) in OSCeleton root folder and launch it with ./launcher
 	-Start the Quadrokinect project.
