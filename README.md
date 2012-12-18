@@ -18,34 +18,34 @@ Content of this GitHub:
 HowTo:
 To test the Quadrokinect project, you will need:
 
--Kinect
--OpenNI Driver
--OSCeleton (https://github.com/Sensebloom/OSCeleton)
-The installation tutorial for OpenNI and OSCeleton can be found at OSCeleton's GitHub
+	-Kinect
+	-OpenNI Driver
+	-OSCeleton (https://github.com/Sensebloom/OSCeleton)
+	The installation tutorial for OpenNI and OSCeleton can be found at OSCeleton's GitHub
 
--Parrot ARDrone (one or more)
--Router (its IP must be 192.168.0.50, the server's (your machine) IP: 192.168.0.1)
+	-Parrot ARDrone (one or more)
+	-Router (its IP must be 192.168.0.50, the server's (your machine) IP: 192.168.0.1)
 
-After installing and buying all these components, you have to:
--Connect to each ARDrone via WiFi
--Connect to it by telnet:
-	telnet 192.168.1.1
--Run the command (described also in Quadrokinect/ArdroneChangeWiFi.info)
-	ifconfig ath0 down ; iwconfig ath0 mode managed essid ArdroneNetwork ap any channel auto commit; ifconfig ath0 192.168.0.{!!!$(3+$THE_ARDRONE_NUMBER)!!!} netmask 255.255.255.0 up
+	After installing and buying all these components, you have to:
+	-Connect to each ARDrone via WiFi
+	-Connect to it by telnet:
+		telnet 192.168.1.1
+	-Run the command (described also in Quadrokinect/ArdroneChangeWiFi.info)
+		ifconfig ath0 down ; iwconfig ath0 mode managed essid ArdroneNetwork ap any channel auto commit; ifconfig ath0 192.168.0.{!!!$(3+$THE_ARDRONE_NUMBER)!!!} netmask 255.255.255.0 up
 
-Note the 192.168.0.{!!!$(3+$THE_ARDRONE_NUMBER)!!!}: this IP address will be given to ARDrone. So for example, if you have 3 ARDrones:
-•The first one must be : 192.168.0.3;
-•The second one must be : 192.168.0.4;
-•The third one must be : 192.168.0.5;
-And so on...
+		Note the 192.168.0.{!!!$(3+$THE_ARDRONE_NUMBER)!!!}: this IP address will be given to ARDrone. So for example, if you have 3 ARDrones:
+			•The first one must be : 192.168.0.3;
+			•The second one must be : 192.168.0.4;
+			•The third one must be : 192.168.0.5;
+			And so on...
 
-Of course, all IP settings can be changed, but you will also have to change the code for Quadrokinect.
+		Of course, all IP settings can be changed, but you will also have to change the code for Quadrokinect.
 
-Now ARDrones are connected.
+	Now ARDrones are connected.
 
--Copy the OSCeleton launcher script (Quadrokinect/launcher) in OSCeleton root folder and launch it with ./launcher
--Start the Quadrokinect project.
+	-Copy the OSCeleton launcher script (Quadrokinect/launcher) in OSCeleton root folder and launch it with ./launcher
+	-Start the Quadrokinect project.
 
-There are some controlers in the Quadrokinect project, so your next actions will depend on them.
+	There are some controlers in the Quadrokinect project, so your next actions will depend on them.
 
 If you have any trouble (and you probably will :) ), send me an e-mail at: nikita.grishin@epfl.ch
