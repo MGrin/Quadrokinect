@@ -13,7 +13,7 @@ public class ArdroneGroup {
 
 	private int id;
 
-	private boolean connected = true;
+	private boolean connected = false;
 
 	private HashMap<Integer, ARDrone> ardrones = new HashMap<Integer, ARDrone>();
 	private HashMap<Integer, Position> positions = new HashMap<Integer, Position>();
@@ -62,6 +62,7 @@ public class ArdroneGroup {
 							+ Constants.IP_ADDRESS_MASK + i);
 					ardrones.get(i).connectVideo();
 					ardrones.get(i).start();
+					System.out.println("Drone conected: "+i);
 				} else {
 					System.out.println("No connection with ardrone on "
 							+ Constants.IP_ADDRESS_MASK + i);

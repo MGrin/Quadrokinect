@@ -1,12 +1,13 @@
 package processing.classes.oneController;
 
 import processing.classes.Axis;
+import processing.classes.ControllerInterface;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import utils.Calculus;
 import utils.Constants;
 
-public class KinectCapture3D {
+public class KinectCapture3D implements ControllerInterface{
 
 	PApplet parent;
 
@@ -153,14 +154,14 @@ public class KinectCapture3D {
 				+ controllerLocation[2] * controllerLocation[2] < 5 * Constants.SAFE_ZONE_SIZE;
 	}
 
-	public void setLeftHand(float x, float y, float z) {
+	public void updateLeftHand(float x, float y, float z) {
 		leftHand[0] = x;
 		leftHand[1] = y;
 		leftHand[2] = z;
 		setUpControllerPosition();
 	}
 
-	public void setRightHand(float x, float y, float z) {
+	public void updateRightHand(float x, float y, float z) {
 		rightHand[0] = x;
 		rightHand[1] = y;
 		rightHand[2] = z;

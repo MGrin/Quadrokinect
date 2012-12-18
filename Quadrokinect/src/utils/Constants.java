@@ -27,7 +27,7 @@ public class Constants {
 	
 	public static final String IP_ADDRESS_MASK = "192.168.0.";
 
-	public static final int STARTING_PORT = 5560;
+	public static final int STARTING_PORT = 5550;
 
 	public static final int NAV_PORT = 5660;
 

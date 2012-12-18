@@ -242,6 +242,8 @@ public class ARDrone implements ARDroneInterface, ImageListener,
 	public void move3D(int speedX, int speedY, int speedZ, int speedSpin) {
 		if (manager != null)
 			manager.move3D(speedX, speedY, speedZ, speedSpin);
+		else 
+			System.out.println("Error: manager = null!!!");
 	}
 
 	// update listeners

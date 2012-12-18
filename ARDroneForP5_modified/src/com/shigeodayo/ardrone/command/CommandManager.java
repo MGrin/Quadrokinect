@@ -41,7 +41,7 @@ public class CommandManager implements Runnable {
 	private String command = null;
 
 	private InetAddress inetaddr;
-
+	private int port;
 	/** speed */
 	private float speed = 0.05f;// 0.01f - 1.0f
 
@@ -212,6 +212,7 @@ public class CommandManager implements Runnable {
 		try {
 			socket = new DatagramSocket(port);
 			socket.setSoTimeout(3000);
+			this.port = port;
 		} catch (SocketException e) {
 			e.printStackTrace();
 			return false;
@@ -224,7 +225,7 @@ public class CommandManager implements Runnable {
 	}
 
 	private synchronized void sendCommand(String command) {
-		System.out.println(command);
+		//System.out.println(command);
 		byte[] buffer = (command + CR).getBytes();
 		// System.out.println(command);
 		DatagramPacket packet = new DatagramPacket(buffer, buffer.length,

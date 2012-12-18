@@ -20,6 +20,8 @@ public class CommandsListener implements GeneralCommandListener {
 	float[] speeds = new float[] { 0, 0, 0, 0 };
 	int rotation = 0;
 
+	float[] controllerLocation = new float[3];
+
 	public CommandsListener(ArdroneGroup controlGroup, PApplet p) {
 
 		this.parent = p;
@@ -29,7 +31,7 @@ public class CommandsListener implements GeneralCommandListener {
 		System.out.println("CommandListener created");
 	}
 
-	public void hand(float[] controllerLocation, float[] leftHand,
+	private void hand(float[] controllerLocation, float[] leftHand,
 			float[] rightHand) {
 		if (Calculus.getDistance(leftHand, rightHand) < Constants.MIN_DISTANCE_BETWEEN_HANDS) {
 			performClack();
@@ -92,6 +94,18 @@ public class CommandsListener implements GeneralCommandListener {
 
 	public void initialize() {
 		nbOfClacks = 0;
+	}
+
+	@Override
+	public void hand(float[] leftHand, float[] rightHand) {
+		hand(calculateMiddle(leftHand, rightHand), leftHand, rightHand);
+	}
+
+	private float[] calculateMiddle(float[] leftHand, float[] rightHand) {
+		controllerLocation[0] = (float) (0.5 * leftHand[0] + 0.5 * rightHand[0]);
+		controllerLocation[1] = (float) (0.5 * leftHand[1] + 0.5 * rightHand[1]);
+		controllerLocation[2] = (float) (0.5 * leftHand[2] + 0.5 * rightHand[2]);
+		return controllerLocation;
 	}
 
 }

@@ -23,7 +23,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import com.shigeodayo.ardrone.command.CommandManager;
-import com.xuggle.xuggler.Global;
+//import com.xuggle.xuggler.Global;
 import com.xuggle.xuggler.IContainer;
 import com.xuggle.xuggler.IPacket;
 import com.xuggle.xuggler.IPixelFormat;
@@ -156,8 +156,8 @@ public class VideoManager implements Runnable {
 		 * Now, we start walking through the container looking at each packet.
 		 */
 		IPacket packet = IPacket.make();
-		long firstTimestampInStream = Global.NO_PTS;
-		long systemClockStartTime = 0;
+//		long firstTimestampInStream = Global.NO_PTS;
+//		long systemClockStartTime = 0;
 		while (container.readNextPacket(packet) >= 0) {
 			/*
 			 * Now we have a packet, let's see if it belongs to our video stream
@@ -232,44 +232,44 @@ public class VideoManager implements Runnable {
 							 * IContainer, and IStream and things can get hairy
 							 * quickly.
 							 */
-							if (firstTimestampInStream == Global.NO_PTS) {
-								// This is our first time through
-								firstTimestampInStream = picture.getTimeStamp();
-								// get the starting clock time so we can hold up
-								// frames until the right time.
-								systemClockStartTime = System
-										.currentTimeMillis();
-							} else {
-								long systemClockCurrentTime = System
-										.currentTimeMillis();
-								long millisecondsClockTimeSinceStartofVideo = systemClockCurrentTime
-										- systemClockStartTime;
-
-								// compute how long for this frame since the
-								// first frame in the stream.
-								// remember that IVideoPicture and IAudioSamples
-								// timestamps are always in MICROSECONDS,
-								// so we divide by 1000 to get milliseconds.
-								long millisecondsStreamTimeSinceStartOfVideo = (picture
-										.getTimeStamp() - firstTimestampInStream) / 1000;
-								final long millisecondsTolerance = 50; // and we
-																		// give
-																		// ourselfs
-																		// 50 ms
-																		// of
-																		// tolerance
-								final long millisecondsToSleep = (millisecondsStreamTimeSinceStartOfVideo - (millisecondsClockTimeSinceStartofVideo + millisecondsTolerance));
-								if (millisecondsToSleep > 0) {
-									try {
-										Thread.sleep(millisecondsToSleep);
-									} catch (InterruptedException e) {
-										// we might get this when the user
-										// closes the dialog box, so just return
-										// from the method.
-										return;
-									}
-								}
-							}
+//							if (firstTimestampInStream == Global.NO_PTS) {
+//								// This is our first time through
+//								firstTimestampInStream = picture.getTimeStamp();
+//								// get the starting clock time so we can hold up
+//								// frames until the right time.
+//								systemClockStartTime = System
+//										.currentTimeMillis();
+//							} else {
+//								long systemClockCurrentTime = System
+//										.currentTimeMillis();
+//								long millisecondsClockTimeSinceStartofVideo = systemClockCurrentTime
+//										- systemClockStartTime;
+//
+//								// compute how long for this frame since the
+//								// first frame in the stream.
+//								// remember that IVideoPicture and IAudioSamples
+//								// timestamps are always in MICROSECONDS,
+//								// so we divide by 1000 to get milliseconds.
+//								long millisecondsStreamTimeSinceStartOfVideo = (picture
+//										.getTimeStamp() - firstTimestampInStream) / 1000;
+//								final long millisecondsTolerance = 50; // and we
+//																		// give
+//																		// ourselfs
+//																		// 50 ms
+//																		// of
+//																		// tolerance
+//								final long millisecondsToSleep = (millisecondsStreamTimeSinceStartOfVideo - (millisecondsClockTimeSinceStartofVideo + millisecondsTolerance));
+//								if (millisecondsToSleep > 0) {
+//									try {
+//										Thread.sleep(millisecondsToSleep);
+//									} catch (InterruptedException e) {
+//										// we might get this when the user
+//										// closes the dialog box, so just return
+//										// from the method.
+//										return;
+//									}
+//								}
+//							}
 
 							// And finally, convert the BGR24 to an Java
 							// buffered image

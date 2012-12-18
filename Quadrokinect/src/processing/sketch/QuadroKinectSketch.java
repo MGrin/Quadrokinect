@@ -2,13 +2,10 @@ package processing.sketch;
 
 import com.shigeodayo.ardrone.ARDrone;
 
-import gui.PositionsSketchWindow;
-import gui.VideoSketchWindow;
-
 import ardrone.ArdroneGroup;
-import listeners.oneController.CommandsListener;
+import listeners.CommandsListenerNew;
 import listeners.oneController.OscListener;
-import processing.classes.oneController.KinectCapture3D;
+import processing.classes.KinectControllerNew;
 import processing.core.PApplet;
 import utils.Constants;
 import utils.ControllerEnum;
@@ -17,27 +14,24 @@ public class QuadroKinectSketch extends PApplet {
 
 	private static final long serialVersionUID = 1L;
 
-	KinectCapture3D controller;
+	// KinectCapture3D controller;
+	KinectControllerNew controller;
 	OscListener oscListener;
 
-	CommandsListener commandsListener;
-
+	// CommandsListener commandsListener;
+	CommandsListenerNew commandsListener;
 	ArdroneGroup controlGroup;
-
-	VideoSketchWindow videoWindow;
-	
-	PositionsSketchWindow positionsWindow;
 
 	private int userTrackedID = -1;
 
 	public void setup() {
-		// Processing draw with controller, axes, some other stuff
-		controller = new KinectCapture3D(this);
+		System.out.println("Quadrokinect setup");
+		// controller = new KinectCapture3D(this);
+		controller = new KinectControllerNew(this);
 		controller.setup();
 		// Listener of OSC messages, comming from OSCeleton
 		oscListener = new OscListener(this);
 
-		
 		// Adding drones in this group
 		addARDrones(controlGroup, 1);
 		controlGroup.setMaxAltitude(10);
@@ -45,7 +39,9 @@ public class QuadroKinectSketch extends PApplet {
 
 		// Listen to commands, comming from kinect, and redirect them to the
 		// drones group
-		commandsListener = new CommandsListener(controlGroup, this);
+		// commandsListener = new CommandsListener(controlGroup, this);
+		commandsListener = new CommandsListenerNew(controlGroup, controller);
+		controller.setDrone(controlGroup.getARDrone(0));
 	}
 
 	public void draw() {
@@ -63,12 +59,13 @@ public class QuadroKinectSketch extends PApplet {
 
 	public void updateController(ControllerEnum hand, float x, float y, float z) {
 		if (hand == ControllerEnum.LEFT_HAND) {
-			controller.setLeftHand(x, y, z);
+			controller.updateLeftHand(x, y, z);
 		} else if (hand == ControllerEnum.RIGHT_HAND) {
-			controller.setRightHand(x, y, z);
+			controller.updateRightHand(x, y, z);
 		}
-		commandsListener.hand(controller.getControllerLocation(),
-				controller.getLeftHand(), controller.getRightHand());
+		if (controller.isCalibrated())
+			commandsListener.hand(controller.getLeftHand(),
+					controller.getRightHand());
 	}
 
 	public void resetController() {
@@ -85,8 +82,8 @@ public class QuadroKinectSketch extends PApplet {
 	public ArdroneGroup getArdrones() {
 		return controlGroup;
 	}
-	
-	public QuadroKinectSketch(){
+
+	public QuadroKinectSketch() {
 		controlGroup = new ArdroneGroup(0);
 	}
 }

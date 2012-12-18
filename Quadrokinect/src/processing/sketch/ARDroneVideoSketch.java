@@ -22,8 +22,8 @@ public class ARDroneVideoSketch extends PApplet {
 	public int row = 1;
 	public int col = 1;
 
-	public static final int w = 480;
-	public static final int h = 360;
+	public static final int w = 640;
+	public static final int h = 480;
 
 	PMatrix temp;
 	MultiMarker nya;
