@@ -5,11 +5,13 @@ Supervisied by: Alex Barchiesi
 The idea of the project is to make a system that will control a group of ARDrones using the Kinect.
 
 Presentation (prezi): http://prezi.com/-5l-jnnzpha0/quadrokinect-11122012/
+
 Demo video: http://www.youtube.com/watch?v=6Ql-eCO1XeY
 
 Content of this GitHub:
 
 -ARDroneForP5_modified: the ARDroneForP5 library (http://kougaku-navi.net/ARDroneForP5/index_en.html) with some changes to work with the second version of Parrot ARDrones:
+
 	• Completely changed video manager (no support for the first version of ARDrone)
 	• Some changes in NAV manager (controls) (Hopefully still supports the ARDrone v1)
 
@@ -28,6 +30,7 @@ To test the Quadrokinect project, you will need:
 	-Router (its IP must be 192.168.0.50, the server's (your machine) IP: 192.168.0.1)
 
 After installing and buying all these components, you have to:
+
 	-Connect to each ARDrone via WiFi
 	-Connect to it by telnet:
 		telnet 192.168.1.1
