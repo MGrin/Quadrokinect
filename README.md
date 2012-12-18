@@ -1,5 +1,7 @@
-README.md
+README.MD
+
 Quadrokinect, SinLab, EPFL 2012
+
 Supervisied by: Alex Barchiesi
 
 The idea of the project is to make a system that will control a group of ARDrones using the Kinect.
