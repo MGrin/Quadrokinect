@@ -9,7 +9,7 @@ import processing.core.PApplet;
  
 public class Timer {
 
-	  int savedTime;
+	  public int savedTime;
 	  int totalTime;
 	  
 	  PApplet parent;

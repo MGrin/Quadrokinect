@@ -4,12 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="libs/nyar4psg-1.2.0/library/NyAR4psg.jar"/>
 	<classpathentry kind="lib" path="libs/nyar4psg-1.2.0/library/NyARToolkit.jar"/>
-	<classpathentry kind="lib" path="libs/peasycam/library/peasycam.jar"/>
 	<classpathentry kind="lib" path="libs/Processing/core.jar"/>
 	<classpathentry kind="lib" path="libs/oscP5.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ARDroneForP5_modified"/>
-	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/Quadrokinect/libs/oscP5.jar"/>
-	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/Quadrokinect/libs/peasycam/library/peasycam.jar"/>
-	<classpathentry kind="lib" path="/Users/nikitagrishin/workspace/Quadrokinect/Quadrokinect/libs/Processing/core.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

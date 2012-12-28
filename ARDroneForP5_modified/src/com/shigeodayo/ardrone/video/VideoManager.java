@@ -23,6 +23,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import com.shigeodayo.ardrone.command.CommandManager;
+import com.xuggle.xuggler.Global;
 //import com.xuggle.xuggler.Global;
 import com.xuggle.xuggler.IContainer;
 import com.xuggle.xuggler.IPacket;
@@ -156,8 +157,8 @@ public class VideoManager implements Runnable {
 		 * Now, we start walking through the container looking at each packet.
 		 */
 		IPacket packet = IPacket.make();
-//		long firstTimestampInStream = Global.NO_PTS;
-//		long systemClockStartTime = 0;
+		long firstTimestampInStream = Global.NO_PTS;
+		long systemClockStartTime = 0;
 		while (container.readNextPacket(packet) >= 0) {
 			/*
 			 * Now we have a packet, let's see if it belongs to our video stream
@@ -252,12 +253,12 @@ public class VideoManager implements Runnable {
 //								// so we divide by 1000 to get milliseconds.
 //								long millisecondsStreamTimeSinceStartOfVideo = (picture
 //										.getTimeStamp() - firstTimestampInStream) / 1000;
-//								final long millisecondsTolerance = 50; // and we
-//																		// give
-//																		// ourselfs
-//																		// 50 ms
-//																		// of
-//																		// tolerance
+//								final long millisecondsTolerance = 500; // and we
+//								// give
+//								// ourselfs
+//								// 50 ms
+//								// of
+//								// tolerance
 //								final long millisecondsToSleep = (millisecondsStreamTimeSinceStartOfVideo - (millisecondsClockTimeSinceStartofVideo + millisecondsTolerance));
 //								if (millisecondsToSleep > 0) {
 //									try {
@@ -270,9 +271,6 @@ public class VideoManager implements Runnable {
 //									}
 //								}
 //							}
-
-							// And finally, convert the BGR24 to an Java
-							// buffered image
 							BufferedImage javaImage = Utils
 									.videoPictureToImage(newPic);
 
@@ -283,6 +281,7 @@ public class VideoManager implements Runnable {
 					} // end of while
 				} catch (Exception exc) {
 					exc.printStackTrace();
+					System.gc();
 				}
 			} else {
 				/*
