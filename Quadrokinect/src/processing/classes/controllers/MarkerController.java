@@ -30,7 +30,7 @@ public class MarkerController implements ActionListener {
 	private PVector markerPoint = new PVector();
 
 	private float delta = 50;
-	private float defaultDistance = 70;
+	private float defaultDistance = 100;
 
 	private PVector speed = new PVector();
 
@@ -39,7 +39,7 @@ public class MarkerController implements ActionListener {
 	private int width = 640;
 	private int height = 320;
 	private boolean inAir = false;
-	private boolean connected = false;
+	private boolean connected = true;
 
 	private ARDrone drone;
 
@@ -58,10 +58,11 @@ public class MarkerController implements ActionListener {
 
 	public void display() {
 		parent.pushMatrix();
-		parent.translate(parent.width - 660, 300);
+		parent.translate(parent.width - 320, 460);
 		if (connected) {
 			PImage im = drone.getVideoImage(true);
 			if (im != null) {
+				parent.imageMode(PImage.CENTER);
 				im.resize(width, height);
 				parent.image(im, 0, 0);
 
@@ -128,8 +129,8 @@ public class MarkerController implements ActionListener {
 		}
 		parent.stroke(255);
 		parent.noFill();
-		parent.rect(0, 0, 640, 360);
-
+		parent.rect(-320, -180, 640, 360);
+		parent.imageMode(PImage.CORNER);
 		parent.popMatrix();
 	}
 

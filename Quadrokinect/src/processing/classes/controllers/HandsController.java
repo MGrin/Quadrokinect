@@ -17,7 +17,7 @@ public class HandsController extends Controller implements ActionListener {
 
 	public static final float handsSphereSize = 10;
 	public static final float controllerSphereSize = 40;
-	public static final float safeZoneSphereSize = 80;
+	public static final float safeZoneSphereSize = 50;
 	public static final float safeAngle = (float) (Math.PI / 6.0f);
 
 	public static final float minDistanceForClack = 100;
@@ -90,11 +90,11 @@ public class HandsController extends Controller implements ActionListener {
 						setUpSafeZone();
 						break;
 					}
-					parent.updateCommand(-1, takeoffLandingSet);
+					parent.updateCommand(takeoffLandingSet);
 				}
 			}
 
-			if (takeoffLandingSet == CommandsTakeOffLandingEnum.TAKEOFF) {
+			if (takeoffLandingSet == CommandsTakeOffLandingEnum.TAKEOFF && processingTimer.isFinished()) {
 				// System.out.println(1);
 
 				if (Calculus.isPointInsideSphere(controller, safeZoneCoords,
@@ -134,9 +134,9 @@ public class HandsController extends Controller implements ActionListener {
 				//System.out.println(ang);
 				if (ang > safeAngle) {
 					if (rightHand[2] > 0)
-						spinSet = CommandsSpinLeftSpinRightEnum.SPIN_RIGHT;
-					else
 						spinSet = CommandsSpinLeftSpinRightEnum.SPIN_LEFT;
+					else
+						spinSet = CommandsSpinLeftSpinRightEnum.SPIN_RIGHT;
 				} else
 					spinSet = CommandsSpinLeftSpinRightEnum.NOTHING;
 
@@ -187,7 +187,7 @@ public class HandsController extends Controller implements ActionListener {
 					}
 					break;
 				case UP:
-					vrSpeed = -default_speed;
+					vrSpeed = -default_speed*10;
 					break;
 				case DOWN:
 					vrSpeed = default_speed;
