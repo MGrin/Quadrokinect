@@ -17,11 +17,11 @@ Content of this GitHub:
 	• Completely changed video manager (no support for the first version of ARDrone)
 	• Some changes in NAV manager (controls) (Hopefully still supports the ARDrone v1)
 
--Quadrokinect: the project's code. It uses the ARDroneForP5_modified project.
+-Quadrokinect: the project code. It uses the ARDroneForP5_modified project.
 
 HowTo:
 
-To test the Quadrokinect project, you will need:
+In order to test the Quadrokinect project, you will need:
 
 	-Kinect
 	-OpenNI Driver
@@ -39,19 +39,19 @@ After installing and buying all these components, you have to:
 	-Run the command (described also in Quadrokinect/ArdroneChangeWiFi.info)
 		ifconfig ath0 down ; iwconfig ath0 mode managed essid ArdroneNetwork ap any channel auto commit; ifconfig ath0 192.168.0.{!!!$(3+$THE_ARDRONE_NUMBER)!!!} netmask 255.255.255.0 up
 
-		Note the 192.168.0.{!!!$(3+$THE_ARDRONE_NUMBER)!!!}: this IP address will be given to ARDrone. So for example, if you have 3 ARDrones:
+		Note the 192.168.0.{!!!$(3+$THE_ARDRONE_NUMBER)!!!}: this is the IP address that will be given to each ARDrone. So for example, if you have 3 ARDrones:
 			•The first one must be : 192.168.0.3;
 			•The second one must be : 192.168.0.4;
 			•The third one must be : 192.168.0.5;
 			And so on...
 
-		Of course, all IP settings can be changed, but you will also have to change the code for Quadrokinect.
+		Of course, all IP settings can be changed, but you will also have to change the Quadrokinect code.
 
 Now ARDrones are connected.
 
 	-Copy the OSCeleton launcher script (Quadrokinect/launcher) in OSCeleton root folder and launch it with ./launcher
 	-Start the Quadrokinect project.
 
-	There are some controlers in the Quadrokinect project, so your next actions will depend on them.
+	There are some controllers in the Quadrokinect project, so your next actions will depend on them.
 
-If you have any trouble (and you probably will :) ), send me an e-mail at: nikita.grishin@epfl.ch
+If you have any trouble (and you probably will :) ), send me an e-mail to: nikita.grishin@epfl.ch
